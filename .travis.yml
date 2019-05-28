@@ -10,10 +10,8 @@ jobs:
       node_js:
         - "node"
       cache: npm
-      services:
-        - docker
       before_script:
-        - yarn run lint
+        - yarn lint
       script:
         - yarn test
 
