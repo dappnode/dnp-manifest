@@ -41,7 +41,7 @@
     "swarm.dnp.dappnode.eth": "latest",
     "dont-use-on-produccion.dappnode.eth": "/ipfs/QmYjtig7VJQ6XsnUjqqJvj7QaMcCAwtrgNdahSiFofrE7o"
   },
-  "changelog": "Major update to OpenVPN: This update breaks compatibility with the last VPN version. Please read the migration guide at: https://migration020.dappnode.io",
+  "changelog": "Brief summary of the most relevant changes that the user must known before installing",
   "warnings": {
     "onInstall": "You must set the PASSWORD ENV before installing the DNP in order for the setup to work correctly.",
     "onUpdate": "Your VPN connection will be lost when the VPN finalizes updating. Leave 1-2 minutes after executing the update and then reconnect and refresh this site.",

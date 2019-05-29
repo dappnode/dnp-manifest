@@ -250,7 +250,7 @@
             "type": "string",
             "description": "Description of relevant changes of this specific version. Supports markdown and links",
             "examples": [
-                "Major update to OpenVPN: This update breaks compatibility with the last VPN version. Please read the migration guide at: https://migration020.dappnode.io"
+                "Brief summary of the most relevant changes that the user must known before installing"
             ]
         },
         "warnings": {
