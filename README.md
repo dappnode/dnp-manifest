@@ -99,6 +99,8 @@ $ npm install -g @dappnode/dnp-manifest
 
 TODO
 
+Note, the DAppNodeDocs are generated with [@adobe/jsonschema2md](https://github.com/adobe/jsonschema2md) from the schema in this repository.
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details

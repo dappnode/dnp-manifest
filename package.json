@@ -47,5 +47,9 @@
     "hooks": {
       "pre-commit": "npm run pre-commit"
     }
+  },
+  "dependencies": {
+    "ajv": "^6.10.0",
+    "ajv-errors": "^1.0.1"
   }
 }
