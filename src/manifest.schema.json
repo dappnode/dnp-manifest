@@ -401,6 +401,19 @@
         }
       }
     },
+    "disclaimer": {
+      "type": "object",
+      "description": "Disclaimer to be shown to the user on install, and will require the user to approve it",
+      "required": ["message"],
+      "properties": {
+        "message": {
+          "type": "string",
+          "examples": [
+            "\"This software is experimental, presented “as is” and inherently carries risks.\""
+          ]
+        }
+      }
+    },
     "license": {
       "type": "string",
       "description": "DNP's License",

@@ -85,6 +85,9 @@ To request additional features in the DNP manifest, please [open an issue](https
   "bugs": {
     "url": "https://github.com/dappnode/DNP_IPFS/issues"
   },
+  "disclaimer": {
+    "message": "This software is experimental, presented “as is” and inherently carries risks."
+  },
   "license": "GPL-3.0"
 }
 ```
