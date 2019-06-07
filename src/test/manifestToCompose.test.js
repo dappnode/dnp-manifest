@@ -5,10 +5,10 @@ const path = require("path");
 
 describe("manifestToCompose", () => {
   /**
-   * Loads all files in the ./manifestToCompose folder
+   * Loads all files in the ./cases folder
    * Each file describes a case with a source manifest and a destination compose
    */
-  const casesFolder = path.resolve(__dirname, "manifests");
+  const casesFolder = path.resolve(__dirname, "cases");
   fs.readdirSync(casesFolder)
     .map(casePath => require(path.resolve(casesFolder, casePath)))
     .filter(({ valid, dc }) => valid && dc)

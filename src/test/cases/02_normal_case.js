@@ -21,8 +21,7 @@ exports.manifest = {
       "nginxproxydnpdappnodeeth_vhost.d:/etc/nginx/vhost.d",
       "nginxproxydnpdappnodeeth_html:/usr/share/nginx/html"
     ],
-    restart: "always",
-    version: "0.0.1"
+    restart: "always"
   },
   author: "Eduardo Antuña Díez (eduadiez)",
   license: "MIT",
