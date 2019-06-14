@@ -36,6 +36,9 @@
     "network_mode": "host",
     "command": "bundle exec thin -p 3000"
   },
+  "requirements": {
+    "minimumDappnodeVersion": "0.2.4"
+  },
   "dependencies": {
     "bitcoin.dnp.dappnode.eth": "^0.1.2",
     "swarm.dnp.dappnode.eth": "latest",

@@ -208,6 +208,19 @@
         }
       }
     },
+    "requirements": {
+      "type": "object",
+      "description": "Specify requirements to be met before allowing users to install this DNP",
+      "properties": {
+        "minimumDappnodeVersion": {
+          "type": "string",
+          "description": "Minimum DAppNode version that includes all the features necessary to run this DNP",
+          "examples": ["0.2.0"],
+          "pattern": "^((([0-9]+).([0-9]+).([0-9]+)))$",
+          "errorMessage": "should be a semantic version in the format x.y.z"
+        }
+      }
+    },
     "dependencies": {
       "type": "object",
       "description": "DNP dependencies. Must be an object where the keys are the DNP's ENS. The values must be a semantic range ('0.2.0', '^0.2.1', '*', 'latest', '/ipfs/QmWwMb3XhuCH6JnCF6m6EQzA4mW9pHHtg7rqAfhDr2ofi8')",
