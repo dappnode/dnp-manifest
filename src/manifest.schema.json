@@ -14,7 +14,7 @@
     "image",
     "license"
   ],
-  "description": "The DAppNode package (DNP) defines all the necessary information for a DAppNode to understand this DNP:\n - IPFS of BZZ hashes to download the DNP docker image \n - Docker related data to configure and run its container \n - Metadata to be shown in the Admin UI",
+  "description": "The DAppNode package (DNP) defines all the necessary information for a DAppNode to understand this DNP:\n - IPFS of BZZ hashes to download the DNP docker image \n - Docker related data to configure and run its container \n - Metadata to be control how the DNP shown in the Admin UI",
   "properties": {
     "name": {
       "type": "string",
@@ -46,14 +46,25 @@
     "type": {
       "type": "string",
       "description": "Type of the DNP. Must be one these types",
+      "default": "service",
       "examples": ["service", "dncore"],
-      "enum": ["service", "library", "dncore"]
+      "enum": ["service", "library", "dncore"],
+      "enumDescriptions": {
+        "service": "Can have ENVs a depend on library DNPs.", 
+        "library": "Should not have ENVs and cannot depend on service DNPs.", 
+        "dncore": "DNPs that are part of the DAppNode core and have special permissions."
+      }
     },
     "chain": {
       "type": "string",
       "description": "Indicate that this DNP is a blockchain node so the Admin UI shows its syncing status",
       "examples": ["ethereum", "bitcoin", "monero"],
-      "enum": ["ethereum", "bitcoin", "monero"]
+      "enum": ["ethereum", "bitcoin"],
+      "enumDescriptions": {
+        "ethereum": "DNP must have an Ethereum JSON RPC exposed internally at port 8545", 
+        "bitcoin": "DNP must have a standard Bitcoin JSON API exposed at the default port (8332). Uses the npm package `bitcoin-core`", 
+        "monero": "DNP must have a Monero API exposed internally at port 18081. Uses the npm package `monero-rpc`"
+      }
     },
     "image": {
       "type": "object",
@@ -64,7 +75,7 @@
         "path": {
           "type": "string",
           "description": "Filename of the DNP image",
-          "examples": ["\"ipfs.dnp.dappnode.eth_0.2.0.tar.xz\""],
+          "examples": ["ipfs.dnp.dappnode.eth_0.2.0.tar.xz"],
           "minLength": 1,
           "errorMessage": "should be an non-empty string"
         },
@@ -80,13 +91,17 @@
           "type": "integer",
           "minimum": 1,
           "description": "Size of the DNP image in bytes",
-          "examples": ["25738523"]
+          "examples": [25738523]
         },
         "volumes": {
           "type": "array",
           "description": "DNP volume mappings",
           "examples": [
-            "[\"/var/run/docker.sock:/var/run/docker.sock\", \"/usr/src/dappnode/config:/usr/src/app/config:ro\", \"ipfsdnpdappnodeeth_data:/data/ipfs\"]"
+            [
+              "/var/run/docker.sock:/var/run/docker.sock",
+              "/usr/src/dappnode/config:/usr/src/app/config:ro",
+              "ipfsdnpdappnodeeth_data:/data/ipfs"
+            ]
           ],
           "items": {
             "type": "string",
@@ -99,8 +114,11 @@
           "type": "array",
           "description": "DNP external volume mappings, volumes have been created outside of this DNP's compose",
           "examples": [
-            "[\"dncore_ethchaindnpdappnodeeth_data:/app/.ethchain:ro\"]",
-            "[\"nginxproxydnpdappnodeeth_vhost.d:/etc/nginx/vhost.d\", \"nginxproxydnpdappnodeeth_html:/usr/share/nginx/html\"]"
+            ["dncore_ethchaindnpdappnodeeth_data:/app/.ethchain:ro"],
+            [
+              "nginxproxydnpdappnodeeth_vhost.d:/etc/nginx/vhost.d",
+              "nginxproxydnpdappnodeeth_html:/usr/share/nginx/html"
+            ]
           ],
           "items": {
             "type": "string",
@@ -113,9 +131,9 @@
           "type": "array",
           "description": "DNP port mappings",
           "examples": [
-            "[\"1194:1194/udp\", \"8090:3000/udp\"]",
-            "[\"4001/udp\", \"4001/tcp\"]",
-            "[\"4001\"]"
+            ["1194:1194/udp", "8090:3000/udp"],
+            ["4001/udp", "4001/tcp"],
+            ["4001"]
           ],
           "items": {
             "type": "string",
@@ -128,7 +146,7 @@
           "type": "array",
           "description": "DNP environment variables. You must declare all ENVs even if they are empty.",
           "examples": [
-            "[\"RACK_ENV=development\", \"SHOW=true\", \"EXTRA_OPTS=\", \"EMPTY_ENV\"]"
+            ["RACK_ENV=development", "SHOW=true", "EXTRA_OPTS=", "EMPTY_ENV"]
           ],
           "items": {
             "type": "string",
@@ -140,7 +158,7 @@
         "labels": {
           "type": "array",
           "description": "Labels to be added to the DNP's docker container.",
-          "examples": ["[\"eth.dappnode.dnp.my-dnp.developer=Awesome_Name\"]"],
+          "examples": [["eth.dappnode.dnp.my-dnp.developer=Awesome_Name"]],
           "items": {
             "type": "string",
             "description": "Use reverse-DNS notation to prevent label conflicts. See https://docs.docker.com/compose/compose-file/#labels-2",
@@ -150,13 +168,21 @@
         },
         "privileged": {
           "type": "boolean",
-          "description": "Grant the DNP (almost) all the capabilities of their host machine, regarding kernel features and device access. See https://blog.docker.com/2013/09/docker-can-now-run-within-docker/"
+          "description": "Grant the DNP (almost) all the capabilities of their host machine, regarding kernel features and device access. See https://blog.docker.com/2013/09/docker-can-now-run-within-docker/",
+          "examples": [true]
         },
         "restart": {
           "type": "string",
           "description": "Docker restart policy, 'always' is highly recommended. See https://docs.docker.com/compose/compose-file/#restart",
+          "default": "always",
           "examples": ["always"],
-          "enum": ["no", "always", "on-failure", "unless-stopped"]
+          "enum": ["always", "no", "on-failure", "unless-stopped"],
+          "enumDescriptions": {
+            "always": "DNP always restarts", 
+            "no": "DNP does not restart under any circumstance", 
+            "on-failure": "DNP restarts if the exit code indicates an on-failure error",
+            "unless-stopped": "DNP restarts unless Docker itself is stopped or restarted"
+          }
         },
         "subnet": {
           "type": "string",
@@ -173,7 +199,7 @@
         "cap_add": {
           "type": "array",
           "description": "Add container capabilities. See https://docs.docker.com/compose/compose-file/#cap_add-cap_drop",
-          "examples": ["[\"NET_ADMIN\", \"SYS_ADMIN\"]", "[\"ALL\"]"],
+          "examples": [["NET_ADMIN", "SYS_ADMIN"], ["ALL"]],
           "items": {
             "type": "string",
             "description": "A valid docker capability key. See https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities",
@@ -184,7 +210,7 @@
         "cap_drop": {
           "type": "array",
           "description": "Drop container capabilities. See https://docs.docker.com/compose/compose-file/#cap_add-cap_drop",
-          "examples": ["[\"NET_ADMIN\", \"SYS_ADMIN\"]"],
+          "examples": [["NET_ADMIN", "SYS_ADMIN"]],
           "items": {
             "type": "string",
             "description": "A valid docker capability key. See https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities",
@@ -195,14 +221,14 @@
         "network_mode": {
           "type": "string",
           "description": "Connect this DNP to a specific network. See https://docs.docker.com/engine/reference/run/#network-settings",
-          "examples": ["\"bridge\"", "\"host\"", "\"none\""],
+          "examples": ["bridge", "host", "none"],
           "minLength": 1,
           "errorMessage": "should be an non-empty string"
         },
         "command": {
           "type": "string",
           "description": "Override the default command. See https://docs.docker.com/compose/compose-file/#command",
-          "examples": ["\"bundle exec thin -p 3000\""],
+          "examples": ["bundle exec thin -p 3000"],
           "minLength": 1,
           "errorMessage": "should be an non-empty string"
         }
@@ -257,28 +283,28 @@
           "type": "string",
           "description": "Will be shown before installing the DNP",
           "examples": [
-            "\"You must set the PASSWORD ENV before installing the DNP in order for the setup to work correctly.\""
+            "You must set the PASSWORD ENV before installing the DNP in order for the setup to work correctly."
           ]
         },
         "onUpdate": {
           "type": "string",
           "description": "Will be shown before updating the DNP, not in the first installation",
           "examples": [
-            "\"Your VPN connection will be lost when the VPN finalizes updating. Leave 1-2 minutes after executing the update and then reconnect and refresh this site.\""
+            "Your VPN connection will be lost when the VPN finalizes updating. Leave 1-2 minutes after executing the update and then reconnect and refresh this site."
           ]
         },
         "onReset": {
           "type": "string",
           "description": "Will be shown before reseting the DNP",
           "examples": [
-            "\"You MUST properly close your open channels before reseting this DNP or you may lose your funds.\""
+            "You MUST properly close your open channels before reseting this DNP or you may lose your funds."
           ]
         },
         "onRemove": {
           "type": "string",
           "description": "Filename of the DNP image",
           "examples": [
-            "\"You MUST properly close your open channels before stopping this DNP or you may lose your funds.\""
+            "You MUST properly close your open channels before stopping this DNP or you may lose your funds."
           ]
         }
       }
@@ -294,7 +320,7 @@
           "from": {
             "type": "string",
             "description": "Semver range, show this message when a user updates this DNP FROM a version that satisfies this range.",
-            "examples": ["\"0.1.x\"", "\"^0.2.0\""],
+            "examples": ["0.1.x", "^0.2.0"],
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           },
@@ -302,7 +328,7 @@
             "type": "string",
             "description": "Semver range, show this message when a user updates this DNP TO a version that satisfies this range.",
             "default": "*",
-            "examples": ["\"0.1.x\"", "\"^0.2.0\"", "\"*\""],
+            "examples": ["0.1.x", "^0.2.0", "*"],
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           },
@@ -310,11 +336,55 @@
             "type": "string",
             "description": "Alert message to be shown when the from and to ranges are satisfied.",
             "examples": [
-              "\"Major update to OpenVPN: This update breaks compatibility with the last VPN version. Please read the migration guide at: https://migration020.dappnode.io\""
+              "Major update to OpenVPN: This update breaks compatibility with the last VPN version. Please read the migration guide at: https://migration020.dappnode.io"
             ],
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
+        }
+      }
+    },
+    "disclaimer": {
+      "type": "object",
+      "description": "Disclaimer to be shown to the user on install, and will require the user to approve it",
+      "required": ["message"],
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Message shown in the pop-up. Markdown and links are allowed",
+          "examples": [
+            "This software is experimental, presented “as is” and inherently carries risks."
+          ]
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "description": "Graphic information to control the appearance of DNP related items in the ADMIN UI",
+      "properties": {
+        "featuredBackground": {
+          "type": "string",
+          "description": "CSS background property to be applied to the DNP card in the DNP store if featured. See https://developer.mozilla.org/docs/Web/CSS/background for valid values",
+          "examples": [
+            "linear-gradient(to right, #323131, #395353)",
+            "black"
+          ]
+        },
+        "featuredColor": {
+          "type": "string",
+          "description": "CSS color property to be applied to the DNP card in the DNP store if featured. See https://developer.mozilla.org/docs/Web/CSS/color for valid values",
+          "examples": [
+            "white",
+            "#fff"
+          ]
+        },
+        "featuredAvatarFilter": {
+          "type": "string",
+          "description": "CSS filter property to be applied to `<img>` component (avatar) of the DNP card in the DNP store if featured. See https://developer.mozilla.org/docs/Web/CSS/filter for valid values",
+          "examples": [
+            "invert(1)",
+            "grayscale(80%);"
+          ]
         }
       }
     },
@@ -361,22 +431,22 @@
         "homepage": {
           "type": "string",
           "description": "Url to an informative homepage for this DNP. Should be a README or landing website.",
-          "examples": ["\"https://github.com/dappnode/DNP_IPFS#readme\""]
+          "examples": ["https://github.com/dappnode/DNP_IPFS#readme"]
         },
         "ui": {
           "type": "string",
           "description": "Url to this DNP's DAppNode local UI.",
-          "examples": ["\"http://ipfs.dappnode:5001/webui\""]
+          "examples": ["http://ipfs.dappnode:5001/webui"]
         },
         "api": {
           "type": "string",
           "description": "Url to this DNP's DAppNode local HTTP API endpoint.",
-          "examples": ["\"http://ipfs.dappnode:5001/api/v0\""]
+          "examples": ["http://ipfs.dappnode:5001/api/v0"]
         },
         "gateway": {
           "type": "string",
           "description": "Url to this DNP's DAppNode local gateway.",
-          "examples": ["\"http://ipfs.dappnode:8080/ipfs\""]
+          "examples": ["http://ipfs.dappnode:8080/ipfs"]
         }
       }
     },
@@ -387,19 +457,19 @@
       "properties": {
         "type": {
           "type": "string",
-          "examples": ["\"git\""],
+          "examples": ["git"],
           "minLength": 1,
           "errorMessage": "should be an non-empty string"
         },
         "url": {
           "type": "string",
-          "examples": ["\"https://github.com/dappnode/DNP_IPFS.git\""],
+          "examples": ["https://github.com/dappnode/DNP_IPFS.git"],
           "minLength": 1,
           "errorMessage": "should be an non-empty string"
         },
         "directory": {
           "type": "string",
-          "examples": ["\"packages/react-dom\""]
+          "examples": ["packages/react-dom"]
         }
       }
     },
@@ -410,20 +480,7 @@
       "properties": {
         "url": {
           "type": "string",
-          "examples": ["\"https://github.com/dappnode/DNP_IPFS/issues\""]
-        }
-      }
-    },
-    "disclaimer": {
-      "type": "object",
-      "description": "Disclaimer to be shown to the user on install, and will require the user to approve it",
-      "required": ["message"],
-      "properties": {
-        "message": {
-          "type": "string",
-          "examples": [
-            "\"This software is experimental, presented “as is” and inherently carries risks.\""
-          ]
+          "examples": ["https://github.com/dappnode/DNP_IPFS/issues"]
         }
       }
     },
