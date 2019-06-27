@@ -21,9 +21,9 @@ exports.valid = false;
 exports.errors = [
   "manifest.version should be a semantic version in the format x.y.z",
   "manifest.avatar should be /ipfs/<hash> or /bzz/<hash>",
-  "manifest.image.path should be an non-empty string",
   "manifest.image.hash should be /ipfs/<hash> or /bzz/<hash>",
-  "manifest.image.size should be >= 1"
+  "manifest.image.size should be >= 1",
+  "manifest.image.path should be an non-empty string"
 ];
 
 exports.dc = null;

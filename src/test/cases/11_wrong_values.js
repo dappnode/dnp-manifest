@@ -22,8 +22,8 @@ exports.manifest = {
 exports.valid = false;
 exports.errors = [
   "manifest.type should be equal to one of the allowed values",
-  "manifest.chain should be equal to one of the allowed values",
-  "manifest.image.restart should be equal to one of the allowed values"
+  "manifest.image.restart should be equal to one of the allowed values",
+  "manifest.chain should be equal to one of the allowed values"
 ];
 
 exports.dc = null;

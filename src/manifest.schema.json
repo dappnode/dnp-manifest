@@ -28,16 +28,21 @@
       "pattern": "^((([0-9]+).([0-9]+).([0-9]+)))$",
       "errorMessage": "should be a semantic version in the format x.y.z"
     },
+    "shortDescription": {
+      "type": "string",
+      "description": "Short DNP description, 6-8 words sentence briefly describing the purpose of this DNP. The purpose is to quickly grab users' attention and clearly define its purpose. Markdown is discouraged as it will NOT be rendered on the general view.",
+      "examples": ["Distributed file system for storing and accessing data."]
+    },
     "description": {
       "type": "string",
-      "description": "DNP description. Should start with a 4-5 words sentence and then be as long as necessary. Markdown and links are allowed",
+      "description": "DNP description. Markdown and links are allowed and ecouraged to give users the option to read more information about this DNP.",
       "examples": [
-        "Your local IPFS node. Dappnode package responsible for providing the VPN (OpenVPN) connection"
+        "Welcome! IPFS is a distributed system for storing and accessing files, websites, applications, and data. If you’re new to IPFS, check our [introductory page](https://ipfs.io/#why) for an easy overview. \n\nWith this node you can upload and download files from IPFS using it own fancy web console at [http://ipfs.dappnode:5001/webui](http://ipfs.dappnode:5001/webui). Other DNPs and external applications can use it's API at the endpoint `http://ipfs.dappnode:5001/api`. Go to the [IPFS HTTP API full reference](https://docs.ipfs.io/reference/api/http/) to check all the features of the API."
       ]
     },
     "avatar": {
       "type": "string",
-      "description": "IPFS / BZZ hash of the Avatar of the DNP. Must be 300x300px, transparent PNG",
+      "description": "IPFS / BZZ hash of the Avatar of the DNP. Must be a 300 x 300px transparent PNG. It is strongly encouraged that you optimize the .png before uploading it to minimize its size.",
       "examples": ["/ipfs/QmWwMb3XhuCH6JnCF6m6EQzA4mW9pHHtg7rqAfhDr2ofi8"],
       "pattern": "^/(ipfs|bzz)/\\w+$",
       "minLength": 46,
@@ -50,35 +55,16 @@
       "examples": ["service", "dncore"],
       "enum": ["service", "library", "dncore"],
       "enumDescriptions": {
-        "service": "Can have ENVs a depend on library DNPs.", 
-        "library": "Should not have ENVs and cannot depend on service DNPs.", 
+        "service": "Can have ENVs a depend on library DNPs.",
+        "library": "Should not have ENVs and cannot depend on service DNPs.",
         "dncore": "DNPs that are part of the DAppNode core and have special permissions."
-      }
-    },
-    "chain": {
-      "type": "string",
-      "description": "Indicate that this DNP is a blockchain node so the Admin UI shows its syncing status",
-      "examples": ["ethereum", "bitcoin", "monero"],
-      "enum": ["ethereum", "bitcoin"],
-      "enumDescriptions": {
-        "ethereum": "DNP must have an Ethereum JSON RPC exposed internally at port 8545", 
-        "bitcoin": "DNP must have a standard Bitcoin JSON API exposed at the default port (8332). Uses the npm package `bitcoin-core`", 
-        "monero": "DNP must have a Monero API exposed internally at port 18081. Uses the npm package `monero-rpc`"
       }
     },
     "image": {
       "type": "object",
-      "title": "The DNP Image Schema",
-      "description": "DNP image upload information, and its docker related properties",
+      "description": "Docker compose properties from which this DNP's `docker-compose.yml` will be generated. Also includes upload data to fetch the image tarball from IPFS of BZZ.",
       "required": ["hash", "size"],
       "properties": {
-        "path": {
-          "type": "string",
-          "description": "Filename of the DNP image",
-          "examples": ["ipfs.dnp.dappnode.eth_0.2.0.tar.xz"],
-          "minLength": 1,
-          "errorMessage": "should be an non-empty string"
-        },
         "hash": {
           "type": "string",
           "description": "IPFS / BZZ hash of the DNP image",
@@ -90,8 +76,15 @@
         "size": {
           "type": "integer",
           "minimum": 1,
-          "description": "Size of the DNP image in bytes",
+          "description": "Size of the DNP image in bytes. Necessary to show a correct download progress bar when user's install this DNP.",
           "examples": [25738523]
+        },
+        "path": {
+          "type": "string",
+          "description": "Filename of the DNP image",
+          "examples": ["ipfs.dnp.dappnode.eth_0.2.0.tar.xz"],
+          "minLength": 1,
+          "errorMessage": "should be an non-empty string"
         },
         "volumes": {
           "type": "array",
@@ -105,7 +98,7 @@
           ],
           "items": {
             "type": "string",
-            "description": "Docker volumes short syntax HOST:CONTAINER:ro mapping. See https://docs.docker.com/compose/compose-file/#volumes",
+            "description": "Docker volumes short syntax `HOST:CONTAINER:ro` mapping. Go to the [docker compose file volumes reference](https://docs.docker.com/compose/compose-file/#volumes) for valid values",
             "pattern": "^[^\\s]+:[^\\s]+$",
             "errorMessage": "should be a docker volume mapping as HOST:CONTAINER:ro"
           }
@@ -122,7 +115,7 @@
           ],
           "items": {
             "type": "string",
-            "description": "Docker volumes short syntax HOST:CONTAINER:ro mapping. See https://docs.docker.com/compose/compose-file/#external",
+            "description": "Docker volumes short syntax `HOST:CONTAINER:ro` mapping. Go to the [docker compose file external volumes reference](https://docs.docker.com/compose/compose-file/#external) for valid values",
             "pattern": "^[^\\s]+:[^\\s]+$",
             "errorMessage": "should be a docker volume mapping as HOST:CONTAINER:ro"
           }
@@ -137,7 +130,7 @@
           ],
           "items": {
             "type": "string",
-            "description": "Docker ports short syntax HOST:CONTAINER/protocol. See https://docs.docker.com/compose/compose-file/#ports",
+            "description": "Docker ports short syntax `HOST:CONTAINER/protocol`. Go to the [docker compose file ports reference](https://docs.docker.com/compose/compose-file/#ports) for valid values",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
@@ -150,73 +143,62 @@
           ],
           "items": {
             "type": "string",
-            "description": "Docker environment variables in array form. See https://docs.docker.com/compose/compose-file/#environment",
+            "description": "Docker environment variables in array form, in the format `KEY=VALUE`. Go to the [docker compose file environment reference](https://docs.docker.com/compose/compose-file/#environment) for valid values",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
-        },
-        "labels": {
-          "type": "array",
-          "description": "Labels to be added to the DNP's docker container.",
-          "examples": [["eth.dappnode.dnp.my-dnp.developer=Awesome_Name"]],
-          "items": {
-            "type": "string",
-            "description": "Use reverse-DNS notation to prevent label conflicts. See https://docs.docker.com/compose/compose-file/#labels-2",
-            "minLength": 1,
-            "errorMessage": "should be an non-empty string"
-          }
-        },
-        "privileged": {
-          "type": "boolean",
-          "description": "Grant the DNP (almost) all the capabilities of their host machine, regarding kernel features and device access. See https://blog.docker.com/2013/09/docker-can-now-run-within-docker/",
-          "examples": [true]
         },
         "restart": {
           "type": "string",
-          "description": "Docker restart policy, 'always' is highly recommended. See https://docs.docker.com/compose/compose-file/#restart",
+          "description": "Docker restart policy, 'always' is highly recommended. Go to the [docker compose file restart reference](https://docs.docker.com/compose/compose-file/#restart) for more details",
           "default": "always",
           "examples": ["always"],
           "enum": ["always", "no", "on-failure", "unless-stopped"],
           "enumDescriptions": {
-            "always": "DNP always restarts", 
-            "no": "DNP does not restart under any circumstance", 
+            "always": "DNP always restarts",
+            "no": "DNP does not restart under any circumstance",
             "on-failure": "DNP restarts if the exit code indicates an on-failure error",
             "unless-stopped": "DNP restarts unless Docker itself is stopped or restarted"
           }
         },
-        "subnet": {
-          "type": "string",
-          "description": "Specify the subnet. See https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address",
-          "examples": ["172.33.0.0/16"],
-          "pattern": "^(?:[0-9]{1,3}.){3}[0-9]{1,3}/[0-9]+$"
-        },
-        "ipv4_address": {
-          "type": "string",
-          "description": "Specify a static IP address for containers for this service when joining the network. See https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address",
-          "examples": ["172.33.1.4"],
-          "pattern": "^(?:[0-9]{1,3}.){3}[0-9]{1,3}$"
+        "privileged": {
+          "type": "boolean",
+          "description": "Grant the DNP (almost) all the capabilities of their host machine, regarding kernel features and device access. Go to this [docker article about priviledge mode](https://blog.docker.com/2013/09/docker-can-now-run-within-docker/) for more details",
+          "examples": [true]
         },
         "cap_add": {
           "type": "array",
-          "description": "Add container capabilities. See https://docs.docker.com/compose/compose-file/#cap_add-cap_drop",
+          "description": "Add container capabilities. Go to the [docker compose file cap_add reference](https://docs.docker.com/compose/compose-file/#cap_add-cap_drop) for more details",
           "examples": [["NET_ADMIN", "SYS_ADMIN"], ["ALL"]],
           "items": {
             "type": "string",
-            "description": "A valid docker capability key. See https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities",
+            "description": "A valid docker capability key. Go to the [docker reference about linux capabilities](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and their meaning",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
         },
         "cap_drop": {
           "type": "array",
-          "description": "Drop container capabilities. See https://docs.docker.com/compose/compose-file/#cap_add-cap_drop",
+          "description": "Drop container capabilities. Go to the [docker compose file cap_drop reference](https://docs.docker.com/compose/compose-file/#cap_add-cap_drop) for more details",
           "examples": [["NET_ADMIN", "SYS_ADMIN"]],
           "items": {
             "type": "string",
-            "description": "A valid docker capability key. See https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities",
+            "description": "A valid docker capability key. Go to the [docker reference about linux capabilities](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and their meaning",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
+        },
+        "subnet": {
+          "type": "string",
+          "description": "Specify the subnet. Go to the [docker compose file ipv4_address-ipv6_address reference](https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address) for valid values",
+          "examples": ["172.33.0.0/16"],
+          "pattern": "^(?:[0-9]{1,3}.){3}[0-9]{1,3}/[0-9]+$"
+        },
+        "ipv4_address": {
+          "type": "string",
+          "description": "Specify a static IP address for containers for this service when joining the network. Go to the [docker compose file ipv4_address-ipv6_address reference](https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address) for valid values",
+          "examples": ["172.33.1.4"],
+          "pattern": "^(?:[0-9]{1,3}.){3}[0-9]{1,3}$"
         },
         "network_mode": {
           "type": "string",
@@ -227,24 +209,33 @@
         },
         "command": {
           "type": "string",
-          "description": "Override the default command. See https://docs.docker.com/compose/compose-file/#command",
+          "description": "Override the default command. Go to the [docker compose file command reference](https://docs.docker.com/compose/compose-file/#command) for valid values",
           "examples": ["bundle exec thin -p 3000"],
           "minLength": 1,
           "errorMessage": "should be an non-empty string"
+        },
+        "labels": {
+          "type": "array",
+          "description": "Labels to be added to the DNP's docker container.",
+          "examples": [["eth.dappnode.dnp.my-dnp.developer=Awesome_Name"]],
+          "items": {
+            "type": "string",
+            "description": "Use reverse-DNS notation (`eth.dappnode.dnp.my-dnp.developer`) to prevent label conflicts. Go to the [docker compose file labels reference](https://docs.docker.com/compose/compose-file/#labels-2) for valid values",
+            "minLength": 1,
+            "errorMessage": "should be an non-empty string"
+          }
         }
       }
     },
-    "requirements": {
-      "type": "object",
-      "description": "Specify requirements to be met before allowing users to install this DNP",
-      "properties": {
-        "minimumDappnodeVersion": {
-          "type": "string",
-          "description": "Minimum DAppNode version that includes all the features necessary to run this DNP",
-          "examples": ["0.2.0"],
-          "pattern": "^((([0-9]+).([0-9]+).([0-9]+)))$",
-          "errorMessage": "should be a semantic version in the format x.y.z"
-        }
+    "chain": {
+      "type": "string",
+      "description": "Indicate that this DNP is a blockchain node so the Admin UI shows its syncing status",
+      "examples": ["ethereum", "bitcoin", "monero"],
+      "enum": ["ethereum", "bitcoin"],
+      "enumDescriptions": {
+        "ethereum": "DNP must have an Ethereum JSON RPC exposed internally at port 8545",
+        "bitcoin": "DNP must have a standard Bitcoin JSON API exposed at the default port (8332). Uses the npm package `bitcoin-core`",
+        "monero": "DNP must have a Monero API exposed internally at port 18081. Uses the npm package `monero-rpc`"
       }
     },
     "dependencies": {
@@ -264,6 +255,19 @@
         "^(.*)$": {
           "type": "string",
           "description": "Semantic version range or IPFS / BZZ hash"
+        }
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "description": "Specify requirements to be met before allowing users to install this DNP",
+      "properties": {
+        "minimumDappnodeVersion": {
+          "type": "string",
+          "description": "Minimum DAppNode version that includes all the features necessary to run this DNP",
+          "examples": ["0.2.0"],
+          "pattern": "^((([0-9]+).([0-9]+).([0-9]+)))$",
+          "errorMessage": "should be a semantic version in the format x.y.z"
         }
       }
     },
@@ -302,9 +306,9 @@
         },
         "onRemove": {
           "type": "string",
-          "description": "Filename of the DNP image",
+          "description": "Will be shown before removing the DNP",
           "examples": [
-            "You MUST properly close your open channels before stopping this DNP or you may lose your funds."
+            "You MUST properly close your open channels before removing this DNP or you may lose your funds."
           ]
         }
       }
@@ -364,27 +368,18 @@
       "properties": {
         "featuredBackground": {
           "type": "string",
-          "description": "CSS background property to be applied to the DNP card in the DNP store if featured. See https://developer.mozilla.org/docs/Web/CSS/background for valid values",
-          "examples": [
-            "linear-gradient(to right, #323131, #395353)",
-            "black"
-          ]
+          "description": "CSS background property to be applied to the DNP card in the DNP store if featured. Go to the [Mozilla CSS background reference](https://developer.mozilla.org/docs/Web/CSS/background) for valid values",
+          "examples": ["linear-gradient(to right, #323131, #395353)", "black"]
         },
         "featuredColor": {
           "type": "string",
-          "description": "CSS color property to be applied to the DNP card in the DNP store if featured. See https://developer.mozilla.org/docs/Web/CSS/color for valid values",
-          "examples": [
-            "white",
-            "#fff"
-          ]
+          "description": "CSS color property to be applied to the DNP card in the DNP store if featured. Go to the [Mozilla CSS color reference](https://developer.mozilla.org/docs/Web/CSS/color) for valid values",
+          "examples": ["white", "#fff"]
         },
         "featuredAvatarFilter": {
           "type": "string",
-          "description": "CSS filter property to be applied to `<img>` component (avatar) of the DNP card in the DNP store if featured. See https://developer.mozilla.org/docs/Web/CSS/filter for valid values",
-          "examples": [
-            "invert(1)",
-            "grayscale(80%);"
-          ]
+          "description": "CSS filter property to be applied to `<img>` component (avatar) of the DNP card in the DNP store if featured. Go to the [Mozilla CSS filter reference](https://developer.mozilla.org/docs/Web/CSS/filter) for valid values",
+          "examples": ["invert(1)", "grayscale(80%);"]
         }
       }
     },
