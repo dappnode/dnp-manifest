@@ -7,3 +7,6 @@ build_*
 dappnode_package.json
 docker-compose.yml
 .cache
+
+# Output of the to markdown tool
+out/
