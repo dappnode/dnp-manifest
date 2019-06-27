@@ -8,7 +8,8 @@
     "test:file": "mocha ",
     "lint": "./node_modules/.bin/eslint . --ext .js --fix",
     "tag-and-publish": "npm version patch && git push origin master && git push --tags",
-    "pre-commit": "npm run lint && npm run test"
+    "pre-commit": "npm run lint && npm run test",
+    "verify-compose": "docker-compose -f docker-compose.yml config"
   },
   "bin": {
     "dnp-manifest": "./src/index.js"

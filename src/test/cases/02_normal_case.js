@@ -54,7 +54,7 @@ services:
     logging:
       options:
         max-size: 10m
-        max-file: 3
+        max-file: '3'
 volumes:
   nginxproxydnpdappnodeeth_vhost.d:
     external:

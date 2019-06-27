@@ -14,8 +14,14 @@ describe("validateManifest", () => {
     .forEach(({ name, manifest, valid, errors }) => {
       it(`Case: ${name}`, () => {
         const res = validateManifest(manifest);
-        expect(res.valid).to.equal(valid, "Wrong valid state");
-        expect(res.errors).to.deep.equal(errors, "Wrong list of errors");
+        expect(res.valid).to.equal(
+          valid,
+          `Wrong manifest valid state: \n${(res.errors || []).join("\n")}`
+        );
+        expect(res.errors).to.deep.equal(
+          errors,
+          "Wrong manifest list of errors"
+        );
       });
     });
 });
