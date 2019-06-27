@@ -169,6 +169,7 @@ function manifestToCompose(manifest) {
   // Extra features
   if (manifest.image.cap_add) service.cap_add = manifest.image.cap_add;
   if (manifest.image.cap_drop) service.cap_drop = manifest.image.cap_drop;
+  if (manifest.image.devices) service.devices = manifest.image.devices;
   if (manifest.image.network_mode)
     service.network_mode = manifest.image.network_mode;
   if (manifest.image.command) service.command = manifest.image.command;

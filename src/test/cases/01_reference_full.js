@@ -39,6 +39,7 @@ exports.manifest = {
     ipv4_address: "172.33.1.4",
     cap_add: ["ALL"],
     cap_drop: ["NET_ADMIN", "SYS_ADMIN"],
+    devices: ["/dev/ttyUSB0:/dev/ttyUSB0", "/dev/sda:/dev/xvdc:rwm"],
     network_mode: "host",
     command: "bundle exec thin -p 3000"
   },
@@ -127,6 +128,9 @@ services:
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
+    devices:
+      - '/dev/ttyUSB0:/dev/ttyUSB0'
+      - '/dev/sda:/dev/xvdc:rwm'
     network_mode: host
     command: bundle exec thin -p 3000
     logging:

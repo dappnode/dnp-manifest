@@ -188,6 +188,17 @@
             "errorMessage": "should be an non-empty string"
           }
         },
+        "devices": {
+          "type": "array",
+          "description": "Allows you to run devices inside the container without the `privileged` flag. Must be a list of device mappings. Uses the same format as the --device docker client create option.",
+          "examples": [["/dev/ttyUSB0:/dev/ttyUSB0", "/dev/sda:/dev/xvdc:rwm"]],
+          "items": {
+            "type": "string",
+            "description": "A valid docker device mapping. Go to the [docker reference about runtime priviledges](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and more details",
+            "minLength": 1,
+            "errorMessage": "should be an non-empty string"
+          }
+        },
         "subnet": {
           "type": "string",
           "description": "Specify the subnet. Go to the [docker compose file ipv4_address-ipv6_address reference](https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address) for valid values",
