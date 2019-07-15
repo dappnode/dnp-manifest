@@ -28,6 +28,13 @@
       "pattern": "^((([0-9]+).([0-9]+).([0-9]+)))$",
       "errorMessage": "should be a semantic version in the format x.y.z"
     },
+    "upstreamVersion": {
+      "type": "string",
+      "description": "For DAppNode packages that only wrap existing software (i.e. Bitcoin node, Ethereum node), the underlying software version can be specified here. It will be shown in the admin UI alongside the field `version`.",
+      "examples": ["2.6.0"],
+      "pattern": "^((([0-9]+).([0-9]+).([0-9]+)))$",
+      "errorMessage": "should be a semantic version in the format x.y.z"
+    },
     "shortDescription": {
       "type": "string",
       "description": "Short DNP description, 6-8 words sentence briefly describing the purpose of this DNP. The purpose is to quickly grab users' attention and clearly define its purpose. Markdown is discouraged as it will NOT be rendered on the general view.",
