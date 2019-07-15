@@ -452,6 +452,31 @@
         "errorMessage": "should be an non-empty string"
       }
     },
+    "categories": {
+      "type": "array",
+      "description": "Categories to organize and group DAppNode Packages in the DAppNode Package store. Only one or two categories maximum should be specified per package. If you feel that any of the current categories represent the nature of your package, please open an issue requesting a new category https://github.com/dappnode/dnp-manifest/issues/new",
+      "examples": [["Developer tools", "Blockchain"]],
+      "items": {
+        "type": "string",
+        "examples": ["Developer tools", "Blockchain", "Economic incentive"],
+        "enum": [
+          "Developer tools",
+          "Blockchain",
+          "Economic incentive",
+          "Payment channels",
+          "Storage",
+          "Communications"
+        ],
+        "enumDescriptions": {
+          "Developer tools": "Packages that their main purpose is to aid in developing, i.e. testnets",
+          "Blockchain": "Blockchain nodes, i.e. Bitcoin, Monero",
+          "Economic incentive": "Packages that offer an economic incentive or reward to the admin that runs it, i.e. Lightning Network",
+          "Payment channels": "Packages whose main purpose is to manage or control payment channels, i.e. Raiden",
+          "Storage": "Decentralized storage solutions, i.e. Swarm",
+          "Communications": "Decentralized networking or chat solutions, i.e. Swarm"
+        }
+      }
+    },
     "keywords": {
       "type": "array",
       "description": "Keywords, relevant and descriptive of this DAppNode Package. They will be shown in the admin UI DAppNode Package store.",
