@@ -31,8 +31,8 @@
     "upstreamVersion": {
       "type": "string",
       "description": "For DAppNode Packages that only wrap existing software (i.e. Bitcoin node, Ethereum node), the underlying software version can be specified here. It will be shown in the admin UI alongside the field `version`.",
-      "examples": ["2.6.0"],
-      "pattern": "^((([0-9]+).([0-9]+).([0-9]+)))$",
+      "examples": ["2.6.0-beta"],
+      "pattern": "^((([0-9]+).([0-9]+).([0-9]+)))(-.*)?$",
       "errorMessage": "should be a semantic version in the format x.y.z"
     },
     "shortDescription": {
@@ -131,7 +131,7 @@
           "type": "array",
           "description": "DAppNode Package port mappings.",
           "examples": [
-            ["1194:1194/udp", "8090:3000/udp"],
+            ["1194:1194/udp", "8090:3000/udp", "4001/tcp"],
             ["4001/udp", "4001/tcp"],
             ["4001"]
           ],
@@ -176,7 +176,7 @@
         "cap_add": {
           "type": "array",
           "description": "Add container capabilities. Go to the [docker-compose file cap_add reference](https://docs.docker.com/compose/compose-file/#cap_add-cap_drop) for more details",
-          "examples": [["NET_ADMIN", "SYS_ADMIN"], ["ALL"]],
+          "examples": [["ALL"], ["NET_ADMIN", "SYS_ADMIN"]],
           "items": {
             "type": "string",
             "description": "A valid docker capability key. Go to the [docker reference about Linux capabilities](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and their meaning.",
@@ -221,7 +221,7 @@
         "network_mode": {
           "type": "string",
           "description": "Connect this DAppNode Package to a specific network. See https://docs.docker.com/engine/reference/run/#network-settings.",
-          "examples": ["bridge", "host", "none"],
+          "examples": ["host", "bridge", "none"],
           "minLength": 1,
           "errorMessage": "should be an non-empty string"
         },
