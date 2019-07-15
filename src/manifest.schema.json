@@ -459,7 +459,7 @@
     },
     "links": {
       "type": "object",
-      "description": "Single keyword with no spaces",
+      "description": "Various links (URLs) useful for the user of this package. All links will be shown in the dedicated view of this package in the admin UI. The predefined links properties below will be shown with concept related icons. Other links will be shown as well but with their plain name instead of an icon.",
       "properties": {
         "homepage": {
           "type": "string",
