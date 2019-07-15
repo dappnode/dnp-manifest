@@ -44,7 +44,7 @@
       "type": "string",
       "description": "DAppNode Package description. Markdown and links are allowed and ecouraged to give users the option to read more information about this DAppNode Package.",
       "examples": [
-        "Welcome! IPFS is a distributed system for storing and accessing files, websites, applications, and data. If you’re new to IPFS, check our [introductory page](https://ipfs.io/#why) for an easy overview. \n\nWith this node you can upload and download files from IPFS using it own fancy web console at [http://ipfs.dappnode:5001/webui](http://ipfs.dappnode:5001/webui). Other DAppNode Packages and external applications can use it's API at the endpoint `http://ipfs.dappnode:5001/api`. Go to the [IPFS HTTP API full reference](https://docs.ipfs.io/reference/api/http/) to check all the features of the API."
+        "Welcome! IPFS is a distributed system for storing and accessing files, websites, applications, and data. If you’re new to IPFS, check our [introductory page](https://ipfs.io/#why) for an easy overview. \n\nWith this node you can upload and download files from IPFS using it own fancy web console at [http://ipfs.dappnode:5001/webui](http://ipfs.dappnode:5001/webui). Other DAppNode Packages and external applications can use its API at the endpoint `http://ipfs.dappnode:5001/api`. Go to the [IPFS HTTP API full reference](https://docs.ipfs.io/reference/api/http/) to check all the features of the API."
       ]
     },
     "avatar": {
@@ -88,7 +88,7 @@
         },
         "path": {
           "type": "string",
-          "description": "Filename of the DAppNode Package image.",
+          "description": "The filename of the DAppNode Package image.",
           "examples": ["ipfs.dnp.dappnode.eth_0.2.0.tar.xz"],
           "minLength": 1,
           "errorMessage": "should be an non-empty string"
@@ -105,7 +105,7 @@
           ],
           "items": {
             "type": "string",
-            "description": "Docker volumes short syntax `HOST:CONTAINER:ro` mapping. Go to the [docker compose file volumes reference](https://docs.docker.com/compose/compose-file/#volumes) for valid values.",
+            "description": "Docker volumes short syntax `HOST:CONTAINER:ro` mapping. Go to the [docker-compose file volumes reference](https://docs.docker.com/compose/compose-file/#volumes) for valid values.",
             "pattern": "^[^\\s]+:[^\\s]+$",
             "errorMessage": "should be a docker volume mapping as HOST:CONTAINER:ro"
           }
@@ -122,7 +122,7 @@
           ],
           "items": {
             "type": "string",
-            "description": "Docker volumes short syntax `HOST:CONTAINER:ro` mapping. Go to the [docker compose file external volumes reference](https://docs.docker.com/compose/compose-file/#external) for valid values.",
+            "description": "Docker volumes short syntax `HOST:CONTAINER:ro` mapping. Go to the [docker-compose file external volumes reference](https://docs.docker.com/compose/compose-file/#external) for valid values.",
             "pattern": "^[^\\s]+:[^\\s]+$",
             "errorMessage": "should be a docker volume mapping as HOST:CONTAINER:ro"
           }
@@ -137,7 +137,7 @@
           ],
           "items": {
             "type": "string",
-            "description": "Docker ports short syntax `HOST:CONTAINER/protocol`. Go to the [docker compose file ports reference](https://docs.docker.com/compose/compose-file/#ports) for valid values.",
+            "description": "Docker ports short syntax `HOST:CONTAINER/protocol`. Go to the [docker-compose file ports reference](https://docs.docker.com/compose/compose-file/#ports) for valid values.",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
@@ -150,14 +150,14 @@
           ],
           "items": {
             "type": "string",
-            "description": "Docker environment variables in array form, in the format `KEY=VALUE`. Go to the [docker compose file environment reference](https://docs.docker.com/compose/compose-file/#environment) for valid values.",
+            "description": "Docker environment variables in array form, in the format `KEY=VALUE`. Go to the [docker-compose file environment reference](https://docs.docker.com/compose/compose-file/#environment) for valid values.",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
         },
         "restart": {
           "type": "string",
-          "description": "Docker restart policy, 'always' is highly recommended. Go to the [docker compose file restart reference](https://docs.docker.com/compose/compose-file/#restart) for more details.",
+          "description": "Docker restart policy, 'always' is highly recommended. Go to the [docker-compose file restart reference](https://docs.docker.com/compose/compose-file/#restart) for more details.",
           "default": "always",
           "examples": ["always"],
           "enum": ["always", "no", "on-failure", "unless-stopped"],
@@ -175,22 +175,22 @@
         },
         "cap_add": {
           "type": "array",
-          "description": "Add container capabilities. Go to the [docker compose file cap_add reference](https://docs.docker.com/compose/compose-file/#cap_add-cap_drop) for more details",
+          "description": "Add container capabilities. Go to the [docker-compose file cap_add reference](https://docs.docker.com/compose/compose-file/#cap_add-cap_drop) for more details",
           "examples": [["NET_ADMIN", "SYS_ADMIN"], ["ALL"]],
           "items": {
             "type": "string",
-            "description": "A valid docker capability key. Go to the [docker reference about linux capabilities](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and their meaning.",
+            "description": "A valid docker capability key. Go to the [docker reference about Linux capabilities](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and their meaning.",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
         },
         "cap_drop": {
           "type": "array",
-          "description": "Drop container capabilities. Go to the [docker compose file cap_drop reference](https://docs.docker.com/compose/compose-file/#cap_add-cap_drop) for more details",
+          "description": "Drop container capabilities. Go to the [docker-compose file cap_drop reference](https://docs.docker.com/compose/compose-file/#cap_add-cap_drop) for more details",
           "examples": [["NET_ADMIN", "SYS_ADMIN"]],
           "items": {
             "type": "string",
-            "description": "A valid docker capability key. Go to the [docker reference about linux capabilities](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and their meaning.",
+            "description": "A valid docker capability key. Go to the [docker reference about Linux capabilities](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and their meaning.",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
@@ -201,20 +201,20 @@
           "examples": [["/dev/ttyUSB0:/dev/ttyUSB0", "/dev/sda:/dev/xvdc:rwm"]],
           "items": {
             "type": "string",
-            "description": "A valid docker device mapping. Go to the [docker reference about runtime priviledges](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and more details.",
+            "description": "A valid docker device mapping. Go to the [docker reference about runtime privileges](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for valid values and more details.",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
         },
         "subnet": {
           "type": "string",
-          "description": "Specify the subnet. Go to the [docker compose file ipv4_address-ipv6_address reference](https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address) for valid values.",
+          "description": "Specify the subnet. Go to the [docker-compose file ipv4_address-ipv6_address reference](https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address) for valid values.",
           "examples": ["172.33.0.0/16"],
           "pattern": "^(?:[0-9]{1,3}.){3}[0-9]{1,3}/[0-9]+$"
         },
         "ipv4_address": {
           "type": "string",
-          "description": "Specify a static IP address for containers for this service when joining the network. Go to the [docker compose file ipv4_address-ipv6_address reference](https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address) for valid values.",
+          "description": "Specify a static IP address for containers for this service when joining the network. Go to the [docker-compose file ipv4_address-ipv6_address reference](https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address) for valid values.",
           "examples": ["172.33.1.4"],
           "pattern": "^(?:[0-9]{1,3}.){3}[0-9]{1,3}$"
         },
@@ -227,7 +227,7 @@
         },
         "command": {
           "type": "string",
-          "description": "Override the default command. Go to the [docker compose file command reference](https://docs.docker.com/compose/compose-file/#command) for valid values.",
+          "description": "Override the default command. Go to the [docker-compose file command reference](https://docs.docker.com/compose/compose-file/#command) for valid values.",
           "examples": ["bundle exec thin -p 3000"],
           "minLength": 1,
           "errorMessage": "should be an non-empty string"
@@ -238,7 +238,7 @@
           "examples": [["eth.dappnode.dnp.my-dnp.developer=Awesome_Name"]],
           "items": {
             "type": "string",
-            "description": "Use reverse-DNS notation (`eth.dappnode.dnp.my-dnp.developer`) to prevent label conflicts. Go to the [docker compose file labels reference](https://docs.docker.com/compose/compose-file/#labels-2) for valid values.",
+            "description": "Use reverse-DNS notation (`eth.dappnode.dnp.my-dnp.developer`) to prevent label conflicts. Go to the [docker-compose file labels reference](https://docs.docker.com/compose/compose-file/#labels-2) for valid values.",
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
           }
@@ -252,8 +252,8 @@
       "enum": ["ethereum", "bitcoin", "monero"],
       "enumDescriptions": {
         "ethereum": "Must have an Ethereum JSON RPC exposed internally at port 8545",
-        "bitcoin": "Must have a standard Bitcoin JSON API exposed at the default port (8332). Uses the npm package `bitcoin-core`",
-        "monero": "Must have a Monero API exposed internally at port 18081. Uses the npm package `monero-rpc`"
+        "bitcoin": "Must have a standard Bitcoin JSON API exposed at the default port (8332). Uses the NPM package `bitcoin-core`",
+        "monero": "Must have a Monero API exposed internally at port 18081. Uses the NPM package `monero-rpc`"
       }
     },
     "dependencies": {
@@ -343,9 +343,9 @@
         },
         "onReset": {
           "type": "string",
-          "description": "Will be shown before reseting the DAppNode Package.",
+          "description": "Will be shown before resetting the DAppNode Package.",
           "examples": [
-            "You MUST properly close your open channels before reseting this DAppNode Package or you may lose your funds."
+            "You MUST properly close your open channels before resetting this DAppNode Package or you may lose your funds."
           ]
         },
         "onRemove": {
@@ -382,9 +382,9 @@
           },
           "message": {
             "type": "string",
-            "description": "Alert message to be shown when the from and to ranges are satisfied.",
+            "description": "Alert message to be shown when `from` and `to` ranges are satisfied.",
             "examples": [
-              "Major update to OpenVPN: This update breaks compatibility with the last VPN version. Please read the migration guide at: https://migration020.dappnode.io"
+              "Major update to OpenVPN: This update breaks compatibility with the last VPN version. Please read the migration guide: https://migration020.dappnode.io"
             ],
             "minLength": 1,
             "errorMessage": "should be an non-empty string"
@@ -399,7 +399,7 @@
       "properties": {
         "message": {
           "type": "string",
-          "description": "Message shown in the pop-up. Markdown and links are allowed.",
+          "description": "The message shown in the pop-up. Markdown and links are allowed.",
           "examples": [
             "This software is experimental, presented “as is” and inherently carries risks."
           ]
