@@ -54,7 +54,10 @@ function manifestToCompose(manifest) {
    * - Optional
    * - Computed from `manifest.image.volumes` and `manifest.image.external_vol`
    */
-  if (manifest.image.volumes || manifest.image.external_vol)
+  if (
+    arrayIsNotEmpty(manifest.image.volumes) ||
+    arrayIsNotEmpty(manifest.image.external_vol)
+  )
     service.volumes = [
       ...(manifest.image.volumes || []),
       ...(manifest.image.external_vol || [])
@@ -65,7 +68,8 @@ function manifestToCompose(manifest) {
    * - Optional
    * - Computed from `manifest.image.ports`
    */
-  if (manifest.image.ports) service.ports = manifest.image.ports;
+  if (arrayIsNotEmpty(manifest.image.ports))
+    service.ports = manifest.image.ports;
 
   /**
    * @param {array} `service.env_file`
@@ -73,7 +77,8 @@ function manifestToCompose(manifest) {
    * - If there are ENVs declared, the installer will create a .env file,
    *   which must be referenced in the docker-compose.yml
    */
-  if (manifest.image.environment) service.env_file = [packageName + ".env"];
+  if (arrayIsNotEmpty(manifest.image.environment))
+    service.env_file = [packageName + ".env"];
 
   /**
    * @param {object|array} `service.networks`
@@ -144,7 +149,7 @@ function manifestToCompose(manifest) {
    * Add the dependencies of the package in its labels
    * Prevents the resolver to access IPFS (and ENS) to know its dependencies
    */
-  if (manifest.dependencies)
+  if (objIsNotEmpty(manifest.dependencies))
     addLabels({
       "dappnode.dnp.dependencies": JSON.stringify(manifest.dependencies)
     });
@@ -200,7 +205,7 @@ function manifestToCompose(manifest) {
    * Regular volumes
    * - Computed from `manifest.image.volumes`
    */
-  if (manifest.image.volumes)
+  if (arrayIsNotEmpty(manifest.image.volumes))
     parseVolumes(manifest.image.volumes).forEach(vol => {
       if (vol.isNamed) volumes[vol.name] = {};
     });
@@ -209,7 +214,7 @@ function manifestToCompose(manifest) {
    * External volumes
    * - Computed from `manifest.image.external_vol`
    */
-  if (manifest.image.external_vol)
+  if (arrayIsNotEmpty(manifest.image.external_vol))
     parseVolumes(manifest.image.external_vol).forEach(vol => {
       volumes[vol.name] = {
         external: {
@@ -253,6 +258,16 @@ function manifestToCompose(manifest) {
   };
 
   return yaml.dump(dockerComposeJson, { indent: 2 });
+}
+
+// Utils
+
+function arrayIsNotEmpty(arr) {
+  return arr && arr.length;
+}
+
+function objIsNotEmpty(obj) {
+  return obj && Object.keys(obj).length;
 }
 
 module.exports = manifestToCompose;
