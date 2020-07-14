@@ -1,3 +1,5 @@
+⚠️ This package has been deprecated. Please use: https://github.com/dappnode/DAppNodeSDK ⚠️
+
 # DNP Manifest
 
 dnp-manifest is a tool define the DNP manifest format by providing its JSON schema and a manifest to docker-compose.yml conversion function.
